@@ -1,0 +1,21 @@
+New Input System
+Hệ thống hỗ trợ cảm ứng của Unity được chia làm hai cấp độ:
+Low-level (cấp thấp):
+Dùng Touchscreen để truy cập trạng thái cảm ứng thô (raw state). Tuy nhiên không nên polling (truy vấn liên tục) qua Touchscreen trong Update/FixedUpdate vì dễ bỏ lỡ trạng thái. Nên dùng EnhancedTouch để xử lý cảm ứng giống UnityEngine.Input.touches.
+
+High-level (cấp cao):
+Dùng EnhancedTouch.Touch cung cấp API polling tương tự UnityEngine.Input.touches.
+Phải bật bằng EnhancedTouchSupport.Enable() mới dùng được.
+
+EnhancedTouch.Touch:
+
+Cung cấp API theo 2 hướng:
+
+Theo finger: Touch.activeFingers (các ngón tay đang hoạt động).
+
+Theo touch: Touch.activeTouches (các lần chạm đang hoạt động, mỗi lần từ bắt đầu -> kết thúc).
+
+// Summarize:
+Touchscreen: truy cập raw touch, không nên polling liên tục.
+EnhancedTouch.Touch: API cao hơn, giống UnityEngine.Input.touches.
+Simulation: dễ dàng mô phỏng touch nếu cần.
