@@ -10,6 +10,10 @@ public class PlayerControl : MonoBehaviour
     private Camera mainCam;
     private Vector3 offset;
     private Vector3 position;
+    private float maxL;
+    private float maxR;
+    private float maxU;
+    private float maxD;
     private void OnEnable()
     {
         EnhancedTouchSupport.Enable();
@@ -21,6 +25,10 @@ public class PlayerControl : MonoBehaviour
     private void Start()
     {
         mainCam = Camera.main;
+        maxL = mainCam.ViewportToWorldPoint(new Vector2(0.15f, 0)).x;
+        maxR = mainCam.ViewportToWorldPoint(new Vector2(0.85f, 0)).x;
+        maxU = mainCam.ViewportToWorldPoint(new Vector2(0f, 0.85f)).y;
+        maxD = mainCam.ViewportToWorldPoint(new Vector2(0, 0.15f)).y;
     }
     private void Update()
     {
@@ -40,7 +48,7 @@ public class PlayerControl : MonoBehaviour
                 position.z = 0;
                 transform.position = position;
             }
-
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, maxL, maxR), Mathf.Clamp(transform.position.y, maxD, maxU), 0);
             
         }
     }
