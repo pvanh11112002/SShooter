@@ -24,11 +24,7 @@ public class PlayerControl : MonoBehaviour
     }
     private void Start()
     {
-        mainCam = Camera.main;
-        maxL = mainCam.ViewportToWorldPoint(new Vector2(0.15f, 0)).x;
-        maxR = mainCam.ViewportToWorldPoint(new Vector2(0.85f, 0)).x;
-        maxU = mainCam.ViewportToWorldPoint(new Vector2(0f, 0.85f)).y;
-        maxD = mainCam.ViewportToWorldPoint(new Vector2(0, 0.15f)).y;
+        StartCoroutine(SetBoundries());
     }
     private void Update()
     {
@@ -52,4 +48,13 @@ public class PlayerControl : MonoBehaviour
             
         }
     }
+    private IEnumerator SetBoundries()
+    {
+        yield return new WaitForSeconds(0.5f);
+        mainCam = Camera.main;
+        maxL = mainCam.ViewportToWorldPoint(new Vector2(0.15f, 0)).x;
+        maxR = mainCam.ViewportToWorldPoint(new Vector2(0.85f, 0)).x;
+        maxU = mainCam.ViewportToWorldPoint(new Vector2(0f, 0.85f)).y;
+        maxD = mainCam.ViewportToWorldPoint(new Vector2(0, 0.15f)).y;
+    }    
 }
