@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -28,24 +29,30 @@ public class PlayerControl : MonoBehaviour
     }
     private void Update()
     {
-        if (Touch.fingers[0].isActive)
+        if (Touch.activeTouches.Count > 0)
         {
-            Touch myTouch = Touch.activeTouches[0];
-            Vector3 touchPos = myTouch.screenPosition;
-            touchPos = mainCam.ScreenToWorldPoint(touchPos);
-            if (Touch.activeTouches[0].phase == TouchPhase.Began)
+            if (Touch.activeTouches[0].finger.index == 0)
             {
-                offset = touchPos - transform.position;
-            }    
-            if (Touch.activeTouches[0].phase == TouchPhase.Moved || Touch.activeTouches[0].phase == TouchPhase.Stationary)
-            {
-                position.x = touchPos.x - offset.x;
-                position.y = touchPos.y - offset.y;
-                position.z = 0;
-                transform.position = position;
-            }
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, maxL, maxR), Mathf.Clamp(transform.position.y, maxD, maxU), 0);
-            
+                Touch myTouch = Touch.activeTouches[0];
+                Vector3 touchPos = myTouch.screenPosition;
+#if UNITY_EDITOR
+                if (touchPos.x == Mathf.Infinity)
+                    return;
+#endif
+                touchPos = mainCam.ScreenToWorldPoint(touchPos);
+                if (Touch.activeTouches[0].phase == TouchPhase.Began)
+                {
+                    offset = touchPos - transform.position;
+                }
+                if (Touch.activeTouches[0].phase == TouchPhase.Moved || Touch.activeTouches[0].phase == TouchPhase.Stationary)
+                {
+                    position.x = touchPos.x - offset.x;
+                    position.y = touchPos.y - offset.y;
+                    position.z = 0;
+                    transform.position = position;
+                }
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x, maxL, maxR), Mathf.Clamp(transform.position.y, maxD, maxU), 0);
+            }          
         }
     }
     private IEnumerator SetBoundries()
